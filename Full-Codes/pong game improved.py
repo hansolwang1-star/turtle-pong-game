@@ -13,11 +13,11 @@ sc.bgcolor("black")
 sc.title("Pong game")
 sc.setup(width=1000,height=600)
 
-#for smoother game plat
+#for smoother game play -- need to manually update graphics
 sc.tracer(0)
 
 
-#Creates the middle line
+#Creates a new turtle for seperation line in the middle of the screen
 
 line = turtle.Turtle()
 line.color("white")
@@ -26,7 +26,7 @@ line.penup()
 line.goto(0,300)
 line.setheading(270)
 
-#for dotted line
+#Draws the actual seperation line -- penup() is used for Dashed line
 for i in range(30):
     line.pendown()
     line.forward(10)
@@ -34,7 +34,7 @@ for i in range(30):
     line.forward(10)
 
 
-#Creates the ball
+#Creates the ball and initialise its location
 
 ball = turtle.Turtle()
 ball.color("red")
@@ -43,7 +43,8 @@ ball.shapesize(stretch_wid=0.5, stretch_len=0.5)
 ball.penup()
 ball.goto(0,0)
 
-#Give values for ball speed on each axis
+#Gives values for dx and dy -- magnitude of ball movement, difference of x and difference of y
+#can change to make ball faster
 ball.dx = 1
 ball.dy = 1
 
@@ -63,7 +64,7 @@ rp.color("white")
 rp.penup()
 rp.goto(400,0)
 
-#defines ball move function using ball.dx and ball.dy above
+#ball movement function. magnitude of speed set by ball.dx and ball.dy above
 def ball_move():
     ball.setx(ball.xcor()+ball.dx)
     ball.sety(ball.ycor()+ball.dy)
@@ -90,7 +91,7 @@ def rp_down():
     y-=10
     rp.sety(y)
 
-#collision for upper and lower walls
+#collision for upper and lower walls -- so that the ball doesnt exit the screen
 def ball_limit():
     if ball.ycor()<-290 or ball.ycor()>290:
         ball.dy*=-1
@@ -105,7 +106,7 @@ def check_collision():
         if lp.ycor() -60 < ball.ycor() < lp.ycor() +60:
             ball.dx*=-1
 
-#detects when a key is pressed and performs a function
+#detects when a specific key is pressed and performs a function
 sc.listen()
 sc.onkeypress(lp_up,key="w")
 sc.onkeypress(lp_down,key="s")
@@ -128,7 +129,7 @@ def startgame():
 
 #defines starting screen
 def startsc():
-    global ssc
+    global ssc #global function ssc (starting screen). when the game is started will be erased
     ssc = turtle.Turtle()
     ssc.hideturtle()
     ssc.color("white")
@@ -149,7 +150,7 @@ while not game_started:
 
 #repeats all the functions and checks for scoring, win detection and display the winner
 while True:
-    sc.update()
+    sc.update() #continously updates screen
     ball_move()
     ball_limit()
     check_collision()
@@ -164,6 +165,7 @@ while True:
         p2+=1
 
     score.clear()
+    #Scoreboard
     score.write(f"Player 1: {p1}           Player 2: {p2}", align = "center", font = ("Arial", 24, "normal"))
     if lp.ycor()>220:
         lp.sety(lp.ycor()-10)
